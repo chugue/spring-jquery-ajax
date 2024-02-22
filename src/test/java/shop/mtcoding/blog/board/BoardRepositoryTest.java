@@ -13,7 +13,6 @@ import java.util.List;
 @Import(BoardRepository.class) // 내가 만든 클래스는 import 해줘야 함.
 @DataJpaTest // DB 관련 객체들이 IoC에 뜬다.
 public class BoardRepositoryTest {
-
     @Autowired // Test에서 DI 하는 코드
     private BoardRepository boardRepository;
 
@@ -51,13 +50,25 @@ public class BoardRepositoryTest {
     @Test
     public void insert_test(){ // 테스트 메서드는 파라미터가 없다. 리턴도 없다.
         // given
-        String title = "제목10";
-        String content = "내용10";
-        String author = "이순신";
-        
+        BoardRequest.WriteDTO requestDTO = new BoardRequest.WriteDTO();
+        requestDTO.setTitle("제목10");
+        requestDTO.setContent("내용10");
+        requestDTO.setContent("이순신");
+
         // when
-        boardRepository.insert(title, content, author);
+        boardRepository.insert(requestDTO);
 
         // then -> 눈으로 확인 (쿼리)
     } // Rollback (자동)
+
+
+    @Test
+    public void update_test () {
+        int a = 1;
+        BoardRequest.UpdateDTO requestDTO = new BoardRequest.UpdateDTO();
+        requestDTO.setTitle("업데이트");
+        requestDTO.setContent("업데이트");
+        requestDTO.setAuthor("업데이트");
+        boardRepository.update(requestDTO, 1);
+    }
 }
