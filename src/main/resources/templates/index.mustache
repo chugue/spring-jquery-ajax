@@ -12,90 +12,48 @@
             <th></th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>5</td>
-            <td>제목5</td>
-            <td>내용5</td>
-            <td>홍길동</td>
-            <td>
-                <div class="d-flex">
-                    <form action="#">
-                        <button class="btn btn-danger">삭제</button>
-                    </form>
-                    <form action="/board/1/updateForm" method="get">
-                        <button class="btn btn-warning">수정</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>제목4</td>
-            <td>내용4</td>
-            <td>홍길동</td>
-            <td>
-                <div class="d-flex">
-                    <form action="#">
-                        <button class="btn btn-danger">삭제</button>
-                    </form>
-                    <form action="/board/1/updateForm" method="get">
-                        <button class="btn btn-warning">수정</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>제목3</td>
-            <td>내용3</td>
-            <td>홍길동</td>
-            <td>
-                <div class="d-flex">
-                    <form action="#">
-                        <button class="btn btn-danger">삭제</button>
-                    </form>
-                    <form action="/board/1/updateForm" method="get">
-                        <button class="btn btn-warning">수정</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>제목2</td>
-            <td>내용2</td>
-            <td>홍길동</td>
-            <td>
-                <div class="d-flex">
-                    <form action="#">
-                        <button class="btn btn-danger">삭제</button>
-                    </form>
-                    <form action="/board/1/updateForm" method="get">
-                        <button class="btn btn-warning">수정</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>제목1</td>
-            <td>내용1</td>
-            <td>홍길동</td>
-            <td>
-                <div class="d-flex">
-                    <form action="#">
-                        <button class="btn btn-danger">삭제</button>
-                    </form>
-                    <form action="/board/1/updateForm" method="get">
-                        <button class="btn btn-warning">수정</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
+        <tbody id="board-box">
+
         </tbody>
     </table>
 
 </div>
+<script>
+    $.ajax({
+        url: "/api/boards", //서버가 같으면 8080뒤에 있는 주소는 뒤에 것만 적어도 됨
+        type: "get" // poset면 컨텐트타입, 데이터가 추가로 들어감
+    }).done((res) => { // 정상(200)이면 done->바디 데이터
+        console.log("통신 성공");
+        console.log(res);
+
+        // for(board of boardList){}도 가능하나 stream api를 쓰는 것이 좋음
+        let boardList = res.body;
+        boardList.forEach((board)=>{
+            $("#board-box").append(render(board));
+        });
+
+    }).fail((res) => {
+        //console.log(res);
+        alert(res.responseJSON.msg);
+        // location.herf="/loginForm";
+    }); // 실패면 다 fail
+
+    function render(board) {
+        return `<tr id="board-${board.id}">
+            <td>${board.id}</td>
+            <td>${board.title}</td>
+            <td>${board.content}</td>
+            <td>${board.author}</td>
+            <td>
+                <div class="d-flex">
+                        <button onclick="del(${board.id})" class="btn btn-danger">삭제</button>
+                    <form action="/board/${board.id}/updateForm" method="get">
+                        <button class="btn btn-warning">수정</button>
+                    </form>
+                </div>
+            </td>
+        </tr>`;
+    }
+</script>
 
 {{> layout/footer}}
