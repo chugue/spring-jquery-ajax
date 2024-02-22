@@ -19,6 +19,18 @@
 
 </div>
 <script>
+    function del(boardId){
+        $.ajax({
+            url: `/api/boards/${boardId}`,
+            type: "delete"
+        }).done(()=>{
+            $(`#board-${boardId}`).remove();
+        }).fail((res)=>{
+            alert(res.responseJSON.msg);
+            location.reload(); //f5
+        });
+    }
+
     $.ajax({
         url: "/api/boards", //서버가 같으면 8080뒤에 있는 주소는 뒤에 것만 적어도 됨
         type: "get" // poset면 컨텐트타입, 데이터가 추가로 들어감
@@ -39,16 +51,17 @@
     }); // 실패면 다 fail
 
     function render(board) {
-        return `<tr id="board-${board.id}">
+        return `
+            <tr id="board-${board.id}">
             <td>${board.id}</td>
             <td>${board.title}</td>
             <td>${board.content}</td>
             <td>${board.author}</td>
             <td>
                 <div class="d-flex">
-                        <button onclick="del(${board.id})" class="btn btn-danger">삭제</button>
+                    <button onclick="del('${board.id}')" class="btn btn-danger">삭제</button>
                     <form action="/board/${board.id}/updateForm" method="get">
-                        <button class="btn btn-warning">수정</button>
+                    <button class="btn btn-warning">수정</button>
                     </form>
                 </div>
             </td>

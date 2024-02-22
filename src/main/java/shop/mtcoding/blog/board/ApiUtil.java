@@ -1,8 +1,6 @@
 package shop.mtcoding.blog.board;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.servlet.tags.HtmlEscapingAwareTag;
 
 @Data
 public class ApiUtil<T> {
