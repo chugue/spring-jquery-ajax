@@ -13,10 +13,8 @@
         </tr>
         </thead>
         <tbody id="board-box">
-
         </tbody>
     </table>
-
 </div>
 <script>
     function del(boardId){
@@ -33,7 +31,7 @@
 
     $.ajax({
         url: "/api/boards", //서버가 같으면 8080뒤에 있는 주소는 뒤에 것만 적어도 됨
-        type: "get" // poset면 컨텐트타입, 데이터가 추가로 들어감
+        type: "get" // post면 컨텐트타입, 데이터가 추가로 들어감
     }).done((res) => { // 정상(200)이면 done->바디 데이터
         console.log("통신 성공");
         console.log(res);
@@ -43,12 +41,55 @@
         boardList.forEach((board)=>{
             $("#board-box").append(render(board));
         });
-
     }).fail((res) => {
         //console.log(res);
         alert(res.responseJSON.msg);
         location.href="/loginForm";
     }); // 실패면 다 fail
+$.ajax({
+    url: "",
+    type: "",
+    data: "",
+    contentType: "",
+}).done((res)=>{
+
+}).fail((res)=>{
+
+});
+
+
+
+
+
+
+
+
+
+$.ajax({
+    url: "",
+    type: "",
+    data: "",
+    contentType: "",
+}).done((  )=>{
+
+}).fail((  )=>{
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function render(board) {
         return `
@@ -70,3 +111,4 @@
 </script>
 
 {{> layout/footer}}
+

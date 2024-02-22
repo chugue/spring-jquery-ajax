@@ -29,7 +29,6 @@ public class BoardRepository {
         } catch (Exception e) {
             return null;
         }
-
     }
 
     @Transactional
