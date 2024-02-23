@@ -11,20 +11,15 @@ import java.util.List;
 public class BoardApiController {
     private final BoardRepository boardRepository;
 
-    @PutMapping("/api/boards/{id}/update")
-    public ApiUtil<?> update(@RequestBody BoardRequest.UpdateDTO requestDTO,
-                             @PathVariable Integer id){
-        Board board = boardRepository.selectOne(id);
-        if (board == null){
-            return new ApiUtil<>(404, "게시글을 찾을 수 없습니다.");
-        }
-
-        boardRepository.update(requestDTO, id);
+    @PutMapping("/api/boards/{id}")
+    public ApiUtil<?> update(@PathVariable int id, @RequestBody BoardRequest.UpdateDTO requestDTO){
+        boardRepository.updateById(requestDTO, id);
         return new ApiUtil<>(null);
     }
 
+
     @PostMapping("/api/boards")
-    public ApiUtil<?> write (@RequestBody BoardRequest.WriteDTO requestDTO){
+    public ApiUtil<?> write(@RequestBody BoardRequest.WriteDTO requestDTO){
         boardRepository.insert(requestDTO);
         return new ApiUtil<>(null);
     }
@@ -32,20 +27,32 @@ public class BoardApiController {
     @DeleteMapping("/api/boards/{id}")
     public ApiUtil<?> deleteById(@PathVariable Integer id, HttpServletResponse response){
         Board board = boardRepository.selectOne(id);
-        if (board == null){
+        if(board == null){
             response.setStatus(404);
-            return new ApiUtil<>(404, "해당 게시글을 찾을 수 없습니다.");
+            return new ApiUtil<>(404, "해당 게시글을 찾을 수 없습니다");
         }
+
         boardRepository.deleteById(id);
         return new ApiUtil<>(null);
     }
-
-
-    @GetMapping(value = "/api/boards")
-    public ApiUtil<?> findAll(HttpServletResponse response) {
-        List<Board> boardList = boardRepository.selectAll();
-        return new ApiUtil<>(boardList); //MessageConverter -> 옛날엔 xml, 요즘은 json
+    @GetMapping("/api/boards/{id}")
+    public ApiUtil<?> findById(@PathVariable int id) {
+        Board board = boardRepository.selectOne(id);
+        return new ApiUtil<>(board); // MessageConverter
     }
 
-
+    @GetMapping("/api/boards")
+    public ApiUtil<?> findAll(HttpServletResponse response) {
+        //response.setStatus(200);
+        List<Board> boardList = boardRepository.selectAll();
+        return new ApiUtil<>(boardList); // MessageConverter
+    }
 }
+
+
+
+
+
+
+
+

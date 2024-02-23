@@ -52,7 +52,7 @@ public class BoardRepository {
     }
 
     @Transactional
-    public void update(BoardRequest.UpdateDTO requestDTO, int id) {
+    public void updateById(BoardRequest.UpdateDTO requestDTO, int id) {
         String q = """
                 update board_tb
                 set title= ?, content =?, author=?
